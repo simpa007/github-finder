@@ -4,7 +4,8 @@ import { fetchGithubUser, searchGithubUser } from "../api/github";
 import UserCard from "./UserCard";
 import RecentSearches from "./RecentSearches";
 import { useDebounce } from "use-debounce";
-import type { GitHubUser } from "../types";
+
+import SuggestionDropdown from "./SuggestionDropdown";
 
 export default function UserSearch() {
 	const [username, setUsername] = useState("");
@@ -33,6 +34,13 @@ export default function UserSearch() {
 
 		enabled: debouncedUsername.length > 1,
 	});
+
+	// update recent search
+	// const updateRecentUsers = (prev: string[], trimmed: string) => {
+	// 	const updated = [trimmed, ...prev.filter((u) => u !== trimmed)];
+	// 	return updated.slice(0, 5);
+	// };
+
 	// for the form
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -52,6 +60,7 @@ export default function UserSearch() {
 		setSubmittedUsername(value);
 		setShowSuggestion(false);
 		setUsername("");
+
 		setRecentUsers((prev) => {
 			const updated = [value, ...prev.filter((u) => u !== value)];
 			return updated.slice(0, 5);
@@ -78,18 +87,10 @@ export default function UserSearch() {
 					/>
 
 					{showSuggestion && suggestions?.length > 0 && (
-						<ul className="suggestions">
-							{suggestions.slice(0, 5).map((user: GitHubUser) => (
-								<li key={user.login} onClick={() => handleClick(user.login)}>
-									<img
-										src={user.avatar_url}
-										alt={user.login}
-										className="avatar-xs"
-									/>
-									{user.login}
-								</li>
-							))}
-						</ul>
+						<SuggestionDropdown
+							suggestions={suggestions}
+							onSelect={handleClick}
+						/>
 					)}
 				</div>
 
