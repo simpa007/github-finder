@@ -27,7 +27,7 @@ export default function UserSearch() {
 		enabled: !!submittedUsername,
 	});
 
-	// Query to fetch suggestions for user search
+	//Query to fetch suggestions for user search
 	const { data: suggestions } = useQuery({
 		queryKey: ["github-user-suggestions", debouncedUsername],
 		queryFn: () => searchGithubUser(debouncedUsername),
@@ -57,9 +57,9 @@ export default function UserSearch() {
 	//for the dropdown
 
 	const handleClick = (value: string) => {
+		setUsername(value);
 		setSubmittedUsername(value);
 		setShowSuggestion(false);
-		setUsername("");
 
 		setRecentUsers((prev) => {
 			const updated = [value, ...prev.filter((u) => u !== value)];

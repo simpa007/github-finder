@@ -8,6 +8,7 @@ export default function SuggestionDropdown({
 	suggestions,
 	onSelect,
 }: SuggestionDropdownProps) {
+	console.log(suggestions);
 	return (
 		<ul className="suggestions">
 			{suggestions.slice(0, 5).map((user: GitHubUser) => (
